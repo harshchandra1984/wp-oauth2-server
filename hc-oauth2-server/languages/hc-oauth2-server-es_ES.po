@@ -1,0 +1,230 @@
+# Spanish translation for OAuth2 Server
+# Copyright (C) 2026 Harsh Chandra
+# This file is distributed under the same license as the OAuth2 Server package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OAuth2 Server 1.0.0\n"
+"Report-Msgid-Bugs-To: https://larawizard.hashnode.dev/\n"
+"POT-Creation-Date: 2026-01-15 12:00+0000\n"
+"PO-Revision-Date: 2026-01-15 12:00+0000\n"
+"Last-Translator: Harsh Chandra <https://larawizard.hashnode.dev/>\n"
+"Language-Team: Spanish\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "OAuth2 Server"
+msgstr "Servidor OAuth2"
+
+msgid "Auth Clients"
+msgstr "Clientes de Autenticación"
+
+msgid "Auth Tokens"
+msgstr "Tokens de Autenticación"
+
+msgid "Webhook Settings"
+msgstr "Configuración de Webhooks"
+
+msgid "OAuth2 client has been successfully added."
+msgstr "El cliente OAuth2 se ha agregado correctamente."
+
+msgid "OAuth2 client has been successfully deleted."
+msgstr "El cliente OAuth2 se ha eliminado correctamente."
+
+msgid "Client secret has been successfully regenerated."
+msgstr "El secreto del cliente se ha regenerado correctamente."
+
+msgid "Access token has been successfully revoked."
+msgstr "El token de acceso se ha revocado correctamente."
+
+msgid "Settings have been successfully saved."
+msgstr "La configuración se ha guardado correctamente."
+
+msgid "Error: Missing required fields. Please fill in all required information."
+msgstr "Error: Faltan campos requeridos. Por favor, complete toda la información requerida."
+
+msgid "Error: Failed to add client. Please try again."
+msgstr "Error: No se pudo agregar el cliente. Por favor, intente de nuevo."
+
+msgid "Error: Failed to delete client. Please try again."
+msgstr "Error: No se pudo eliminar el cliente. Por favor, intente de nuevo."
+
+msgid "Error: Failed to regenerate client secret. Please try again."
+msgstr "Error: No se pudo regenerar el secreto del cliente. Por favor, intente de nuevo."
+
+msgid "Error: Failed to revoke token. Please try again."
+msgstr "Error: No se pudo revocar el token. Por favor, intente de nuevo."
+
+msgid "Error: Failed to save settings. Please try again."
+msgstr "Error: No se pudieron guardar la configuración. Por favor, intente de nuevo."
+
+msgid "Error: Security check failed. Please try again."
+msgstr "Error: La verificación de seguridad falló. Por favor, intente de nuevo."
+
+msgid "Server Information"
+msgstr "Información del Servidor"
+
+msgid "Authorization Endpoint"
+msgstr "Endpoint de Autorización"
+
+msgid "Token Endpoint"
+msgstr "Endpoint de Token"
+
+msgid "Userinfo Endpoint"
+msgstr "Endpoint de Información de Usuario"
+
+msgid "Logout Endpoint"
+msgstr "Endpoint de Cierre de Sesión"
+
+msgid "Quick Stats"
+msgstr "Estadísticas Rápidas"
+
+msgid "Registered Clients:"
+msgstr "Clientes Registrados:"
+
+msgid "Active Tokens:"
+msgstr "Tokens Activos:"
+
+msgid "Add New Client"
+msgstr "Agregar Nuevo Cliente"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Client ID"
+msgstr "ID de Cliente"
+
+msgid "Client Secret"
+msgstr "Secreto del Cliente"
+
+msgid "Redirect URI"
+msgstr "URI de Redirección"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Regenerate Secret"
+msgstr "Regenerar Secreto"
+
+msgid "Are you sure you want to delete this client?"
+msgstr "¿Está seguro de que desea eliminar este cliente?"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Add New OAuth2 Client"
+msgstr "Agregar Nuevo Cliente OAuth2"
+
+msgid "Client Name"
+msgstr "Nombre del Cliente"
+
+msgid "A descriptive name for this client application."
+msgstr "Un nombre descriptivo para esta aplicación cliente."
+
+msgid "The callback URL where users will be redirected after authorization."
+msgstr "La URL de devolución de llamada donde se redirigirá a los usuarios después de la autorización."
+
+msgid "Add Client"
+msgstr "Agregar Cliente"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "User"
+msgstr "Usuario"
+
+msgid "Access Token"
+msgstr "Token de Acceso"
+
+msgid "Expires"
+msgstr "Expira"
+
+msgid "Active"
+msgstr "Activo"
+
+msgid "Expired"
+msgstr "Expirado"
+
+msgid "Are you sure you want to revoke this token?"
+msgstr "¿Está seguro de que desea revocar este token?"
+
+msgid "Revoke"
+msgstr "Revocar"
+
+msgid "Webhook settings have been saved successfully."
+msgstr "La configuración de webhooks se ha guardado correctamente."
+
+msgid "Order Webhook URL"
+msgstr "URL de Webhook de Pedidos"
+
+msgid "https://your-webhook-endpoint.com/webhook"
+msgstr "https://su-endpoint-webhook.com/webhook"
+
+msgid "Enter the webhook URL where order completion notifications will be sent. The webhook will receive a POST request with order and user data."
+msgstr "Ingrese la URL del webhook donde se enviarán las notificaciones de finalización de pedidos. El webhook recibirá una solicitud POST con datos del pedido y del usuario."
+
+msgid "User Webhook URL"
+msgstr "URL de Webhook de Usuario"
+
+msgid "Enter the webhook URL where User Profile and roles notifications will be sent. The webhook will receive a POST request with user data and associated roles."
+msgstr "Ingrese la URL del webhook donde se enviarán las notificaciones de perfil de usuario y roles. El webhook recibirá una solicitud POST con datos del usuario y roles asociados."
+
+msgid "Save Settings"
+msgstr "Guardar Configuración"
+
+msgid "Missing required parameters"
+msgstr "Faltan parámetros requeridos"
+
+msgid "Only authorization code flow is supported"
+msgstr "Solo se admite el flujo de código de autorización"
+
+msgid "Invalid client"
+msgstr "Cliente inválido"
+
+msgid "Invalid redirect URI"
+msgstr "URI de redirección inválida"
+
+msgid "Invalid client credentials"
+msgstr "Credenciales de cliente inválidas"
+
+msgid "Unsupported grant type"
+msgstr "Tipo de concesión no admitido"
+
+msgid "Invalid authorization code"
+msgstr "Código de autorización inválido"
+
+msgid "Missing refresh token"
+msgstr "Falta el token de actualización"
+
+msgid "Invalid refresh token"
+msgstr "Token de actualización inválido"
+
+msgid "Missing access token"
+msgstr "Falta el token de acceso"
+
+msgid "Invalid access token"
+msgstr "Token de acceso inválido"
+
+msgid "User not found"
+msgstr "Usuario no encontrado"
+
+msgid "Client ID mismatch"
+msgstr "El ID de cliente no coincide"
+
+msgid "Invalid post_logout_redirect_uri"
+msgstr "URI de redirección después del cierre de sesión inválida"
+
+msgid "Failed to generate authorization code"
+msgstr "Error al generar el código de autorización"
+
+msgid "OAuth2 Error"
+msgstr "Error de OAuth2"
+
+msgid "Successfully logged out"
+msgstr "Sesión cerrada correctamente"
