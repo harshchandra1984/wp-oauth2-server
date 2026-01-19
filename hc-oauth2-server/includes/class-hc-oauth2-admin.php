@@ -145,7 +145,7 @@ class HC_OAuth2_Admin {
         $screen = get_current_screen();
         
         // Only show notices on our plugin pages
-        if (!$screen || strpos($screen->id, 'hc-oauth2-server') === false) {
+        if (!$screen || strpos($screen->id, 'hc-oauth2') === false) {
             return;
         }
         
@@ -234,7 +234,7 @@ class HC_OAuth2_Admin {
         
         // Only process OAuth2 actions if we're on an OAuth2 admin page or if the action is specifically for OAuth2
         $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
-        $is_oauth2_page = strpos($current_page, 'hc-oauth2-server') === 0;
+        $is_oauth2_page = strpos($current_page, 'hc-oauth2-') === 0 || strpos($current_page, 'hc-webhook') === 0;
         
         if (isset($_POST['action']) && isset($_POST['_wpnonce']) && $is_oauth2_page) {
             $action = sanitize_text_field($_POST['action']);
@@ -251,6 +251,9 @@ class HC_OAuth2_Admin {
                         break;
                     case 'revoke_token':
                         $this->revoke_token();
+                        break;
+                    case 'save_settings':
+                        $this->save_webhook_settings();
                         break;
                 }
             } else {
@@ -277,13 +280,13 @@ class HC_OAuth2_Admin {
             case 'add_client':
             case 'delete_client':
             case 'regenerate_secret':
-                return 'hc-oauth2-server-clients';
+                return 'hc-oauth2-clients';
             case 'revoke_token':
-                return 'hc-oauth2-server-tokens';
+                return 'hc-oauth2-tokens';
             case 'save_settings':
-                return 'hc-oauth2-server-settings';
+                return 'hc-webhook-settings';
             default:
-                return 'hc-oauth2-server-clients';
+                return 'hc-oauth2-clients';
         }
     }
     
@@ -368,7 +371,7 @@ class HC_OAuth2_Admin {
         ?>
         <div class="wrap">
             <h1><?php echo esc_html__('OAuth2 Clients', 'hc-oauth2-server'); ?></h1>
-            <a href="?page=hc-oauth2-clients&action=add" class="page-title-action"><?php echo esc_html__('Add New Client', 'hc-oauth2-server'); ?></a>
+            <a href="?page=hc-oauth2-clients&action=add" class="page-title-action mb-10"><?php echo esc_html__('Add New Client', 'hc-oauth2-server'); ?></a>
             
             <table class="wp-list-table widefat fixed striped">
                 <thead>
@@ -426,6 +429,16 @@ class HC_OAuth2_Admin {
                         </td>
                     </tr>
                     <?php endforeach; ?>
+                    <?php if (empty($clients)): ?>
+                    <tr>
+                        <td colspan="6">
+                            <div class="no-results-found">
+                                <p><?php echo esc_html__('No clients found.', 'hc-oauth2-server'); ?></p>
+                                <a href="?page=hc-oauth2-clients&action=add" class="button button-small"><?php echo esc_html__('Add New Client', 'hc-oauth2-server'); ?></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -442,14 +455,8 @@ class HC_OAuth2_Admin {
      * @return void
      */
     private function client_form() {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Verify nonce for form submission
-            if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'hc_oauth2_server_action')) {
-                wp_die(esc_html__('Security check failed', 'hc-oauth2-server'));
-                return;
-            }
-            $this->add_client();
-        }
+        // Form submission for adding a client is handled by handle_admin_actions()
+        // via the admin_init hook, which runs before any output is sent.
         ?>
         <div class="wrap">
             <h1><?php echo esc_html__('Add New OAuth2 Client', 'hc-oauth2-server'); ?></h1>
@@ -554,6 +561,15 @@ class HC_OAuth2_Admin {
                         </td>
                     </tr>
                     <?php endforeach; ?>
+                    <?php if (empty($tokens)): ?>
+                    <tr>
+                        <td colspan="6">
+                            <div class="no-results-found">
+                                <p><?php echo esc_html__('No tokens found.', 'hc-oauth2-server'); ?></p>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -839,14 +855,6 @@ class HC_OAuth2_Admin {
      * @return void
      */
     public function webhook_settings_page() {
-        // Handle form submission
-        if (isset($_POST['submit']) && isset($_POST['hc_oauth2_server_webhook_nonce']) && wp_verify_nonce($_POST['hc_oauth2_server_webhook_nonce'], 'hc_oauth2_server_webhook_settings')) {
-            $hc_oauth2_server_user_webhook_url = isset($_POST['hc_oauth2_server_user_webhook_url']) ? sanitize_url($_POST['hc_oauth2_server_user_webhook_url']) : '';
-            update_option('hc_oauth2_server_user_webhook_url', $hc_oauth2_server_user_webhook_url);
-            wp_safe_redirect(admin_url('admin.php?page=hc-oauth2-server-webhook-settings&message=settings_saved'));
-            exit;
-        }
-        
         $current_user_webhook_url = get_option('hc_oauth2_server_user_webhook_url', '');
         ?>
         <div class="wrap">
@@ -859,7 +867,8 @@ class HC_OAuth2_Admin {
             <?php endif; ?>
             
             <form method="post" action="">
-                <?php wp_nonce_field('hc_oauth2_server_webhook_settings', 'hc_oauth2_server_webhook_nonce'); ?>
+                <?php wp_nonce_field('hc_oauth2_server_action'); ?>
+                <input type="hidden" name="action" value="save_settings">
                 
                 <table class="form-table">
                     <tr>
@@ -884,5 +893,21 @@ class HC_OAuth2_Admin {
             </form>
         </div>
         <?php
+    }
+
+    /**
+     * Save webhook settings from the admin form.
+     *
+     * Processes the webhook settings form submission and redirects
+     * back to the settings page with an appropriate message.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    private function save_webhook_settings() {
+        $hc_oauth2_server_user_webhook_url = isset($_POST['hc_oauth2_server_user_webhook_url']) ? sanitize_url($_POST['hc_oauth2_server_user_webhook_url']) : '';
+        update_option('hc_oauth2_server_user_webhook_url', $hc_oauth2_server_user_webhook_url);
+        wp_safe_redirect(admin_url('admin.php?page=hc-webhook-settings&message=settings_saved'));
+        exit;
     }
 } 

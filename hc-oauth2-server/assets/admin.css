@@ -1,5 +1,14 @@
 /* OAuth2 Server Admin Styles */
 
+.no-results-found {
+    text-align: center;
+    padding: 5%;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
 .token-status {
     padding: 2px 8px;
     border-radius: 3px;
