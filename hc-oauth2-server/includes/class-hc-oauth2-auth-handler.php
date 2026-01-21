@@ -129,8 +129,7 @@ class HC_OAuth2_Auth_Handler {
         if (!is_user_logged_in()) {
             // Store OAuth2 parameters in session and redirect to login
             $this->store_oauth_params($client_id, $redirect_uri, $scope, $state);
-            // Redirect to WooCommerce My Account page instead of default WordPress login
-            $login_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : wp_login_url();
+            $login_url = wp_login_url();
             /**
              * Filter the login URL for OAuth2 authorization flow.
              *
@@ -482,7 +481,7 @@ class HC_OAuth2_Auth_Handler {
                 $redirect_url = add_query_arg('state', $state, $redirect_url);
             }
             
-            wp_safe_redirect($redirect_url);
+            wp_redirect($redirect_url);
             exit;
         } else {
             // Return JSON success response
@@ -630,7 +629,7 @@ class HC_OAuth2_Auth_Handler {
          */
         $redirect_url = apply_filters('hc_oauth2_authorization_redirect_url', $redirect_url, $code, $state, $redirect_uri);
         
-        wp_safe_redirect($redirect_url);
+        wp_redirect($redirect_url);
         exit;
     }
     
@@ -798,7 +797,7 @@ class HC_OAuth2_Auth_Handler {
         $usermeta_table = $wpdb->prefix . 'usermeta';
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $user = $wpdb->get_row($wpdb->prepare(
-                    "SELECT u.ID AS legacy_id, u.user_email, u.user_registered,
+                    "SELECT u.ID AS wp_id, u.user_email, u.user_registered,
                     MAX(CASE WHEN um.meta_key = 'first_name' THEN um.meta_value END) AS first_name,
                     MAX(CASE WHEN um.meta_key = 'last_name' THEN um.meta_value END) AS last_name,
                     MAX(CASE WHEN um.meta_key = 'wp_capabilities' THEN um.meta_value END) AS roles
@@ -817,7 +816,9 @@ class HC_OAuth2_Auth_Handler {
         
         
         return array(
-            'legacy_id' => $user->legacy_id,
+            'wp_id' => $user->wp_id,
+            'name' => $user->first_name . ' ' . $user->last_name,
+            'display_name' => $user->first_name . ' ' . $user->last_name,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'user_email' => $user->user_email,
@@ -1093,7 +1094,7 @@ class HC_OAuth2_Auth_Handler {
                 'state' => $state
             ), $redirect_uri);
             
-            wp_safe_redirect($redirect_url);
+            wp_redirect($redirect_url);
             exit;
         } else {
             wp_die(esc_html($error_description), esc_html__('OAuth2 Error', 'hc-oauth2-server'), array('response' => 400));
